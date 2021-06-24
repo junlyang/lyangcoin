@@ -2,8 +2,7 @@ package main
 
 import (
 	"fmt"
-
-	"github.com/junlyang/gocoin/blockchain"
+	"github.com/junlyang/lyangcoin/blockchain"
 )
 
 func main() {
