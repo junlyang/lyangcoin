@@ -1,3 +1,3 @@
-module github.com/junlyang/gocoin
+module github.com/junlyang/lyangcoin
 
 go 1.16
