@@ -2,18 +2,30 @@ package main
 
 import (
 	"fmt"
+	"html/template"
+	"log"
+	"net/http"
+
 	"github.com/junlyang/lyangcoin/blockchain"
 )
 
+const port string = ":4000"
+
+type homeData struct {
+	PageTitle string
+	Blocks    []*blockchain.Block
+}
+
+func home(rw http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles("templates/pages/home.gohtml"))
+	data := homeData{"안녕", blockchain.GetBlockchain().AllBlocks()}
+	tmpl.Execute(rw, data)
+}
 func main() {
-	fmt.Println("작동 잘함 ")
 	chain := blockchain.GetBlockchain()
-	chain.AddBlock("Second Block")
-	chain.AddBlock("Third Block")
-	chain.AddBlock("Fourth Block")
-	for _, block := range chain.AllBlocks() {
-		fmt.Printf("Data : %s\n", block.Data)
-		fmt.Printf("Hash : %s\n", block.Hash)
-		fmt.Printf("PrevHash : %s\n", block.PrevHash)
-	}
+	chain.AddBlock("second block")
+
+	http.HandleFunc("/", home)
+	fmt.Printf("Lisnening on http://localhost%s\n", port)
+	log.Fatal(http.ListenAndServe(port, nil))
 }
